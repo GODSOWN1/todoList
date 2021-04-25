@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>Todo List</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    
+    <div class="box" id="heading">
+        <h1>It is a <%= listTitle %> </h1>
+
+    </div>
+
+    
+
+    <div class="box" >
+    
+        <%  for (i=0; i<newlyAdded.length; i++){ %> 
+            <input type="checkbox">
+            <p> <%= newListItems[i] %> </p><hr>
+        <% } %>
+
+<div class="item">
+    </div> 
+
+
+ <form action="/" method="POST">
+    <input type="text" placeholder="newitem" name="requirement" autocomplete="off">
+    <button type="submit" name="list" value= <%=listTitle %>  >+</button>
+</form>
+</body>
+</html>
