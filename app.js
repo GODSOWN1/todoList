@@ -1,16 +1,18 @@
 const express = require ("express");
 const mongoose = require ("mongoose");
+const _ = require ("lodash");
+
 //const date = require (__dirname + "/date.js");
 
 
-const app= express ();
+const app = express ();
 
 
 app.set("view engine", "ejs");
 app.use (express.urlencoded({extended: true}));
 app.use (express.static ("public"));
 
-mongoose.connect ("mongodb://localhost:27017/todolistDB",{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect ("mongodb+srv://admin-Kenneth:ASAken12345@cluster0.vtd9t.mongodb.net/myFirstDatabase?retryWrites=true&w=majority/todolistDB",{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const itemsSchema = new mongoose.Schema ({
     name: String,
@@ -60,7 +62,6 @@ app.get("/", function(req, res){
             res.render ("list", {ListTitle: "Today", newListItems: results });
         }
     });
-    
 });
 
 
@@ -76,9 +77,8 @@ const item = new TODOL ({
 if (listName=== "Today") {
     item.save();
     res.redirect("/");
-}
-else {
-    List.findOne ({name:listName}, function(err, foundlist){
+} else {
+    List.findOne({name:listName}, function(err, foundlist){
         foundlist.items.push(item);
         foundlist.save();
         res.redirect("/"+ listName);
@@ -89,41 +89,29 @@ else {
 app.post ("/delete", function(req, res) {
 
     const checkedItemId = req.body.checkbox;
+    const listName      = req.body.listName;
 
-    //if (ListTitle === "Today"){
-      TODOL.findOneAndRemove( checkedItemId , function(err){
-        if(err){
-          console.log(err)
-        } else{
-            console.log("no errors");
-            res.redirect("/");
+    if (listName ==="Today") {
+        TODOL.findOneAndRemove(checkedItemId , function(err){
+            if(!err){
+              console.log("Successfully deleted");
+              res.redirect("/");
         }  
-   });
-});
+}); 
 
-
-app.post("/work", function (req, res){
-  
-});
-/* const item = req.body.newItem;
-    workitems.push(item);
-    res.redirect("/")
-
-if (req.body.list=== "Work") {
-    workitems.push(item);
-    res.redirect ("/work"); 
 } else {
-    items.push(item);
-    res.redirect ("/");
-} */
-
-
-
+List.findOneAndUpdate ({name: listName}, {$pull: {items:{name:checkedItemId}}}, function(err, foundlist) {
+    if (!err) {
+        res.redirect ("/" + listName);
+    }
+});
+}  
+});
 
 // this is a dynamic route
 
 app.get ("/:customListName", function(req, res){
-    const customListName = (req.params.customListName);
+    const customListName = _.capitalize(req.params.customListName);
 
 
     List.findOne({name:customListName}, function (err, foundlist){
@@ -144,14 +132,6 @@ app.get ("/:customListName", function(req, res){
 });
 
 
-
-
-/*app.get ("/work", function(req, res){
-    res.render ("list", {ListTitle: "work list", newListItems: workitems });
-});  */
-
-
-
 app.get ("/about", function(req, res){
     res.render("about"); 
 });
@@ -160,8 +140,19 @@ app.listen (3000, function(){
     console.log ("Server started at port 3000");
 });
 
-    
-    /*if (currentDay===6 || currentDay===0) {
+
+
+
+
+
+
+
+
+
+
+
+
+/*if (currentDay===6 || currentDay===0) {
         day=   "weekend";
     }
     else {
@@ -200,3 +191,32 @@ app.listen (3000, function(){
     
     
     for (let i = 0; i < newListItems.length; i++) {}*/
+
+
+    /*app.post("/work", function (req, res){
+  
+    });   */
+
+
+
+
+
+    /* const item = req.body.newItem;
+        workitems.push(item);
+        res.redirect("/")
+    
+    if (req.body.list=== "Work") {
+        workitems.push(item);
+        res.redirect ("/work"); 
+    } else {
+        items.push(item);
+        res.redirect ("/");
+    } */
+    
+    
+    
+    /*app.get ("/work", function(req, res){
+    res.render ("list", {ListTitle: "work list", newListItems: workitems });
+});  */
+
+

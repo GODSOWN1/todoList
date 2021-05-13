@@ -7,15 +7,18 @@
     <div class="box" id="heading">
         <h1><%= ListTitle  %> </h1>
     </div>
-
+    
     
     <form action="/delete" method="POST">
         <% newListItems.forEach(item => {  %>
     <div class="item">
         <input type="checkbox" name="checkbox" value="<%= item.name %> " onChange="this.form.submit()">
         <p><%= item.name %> </p> 
+        
     </div>
     <% }); %>
+
+    <input type="hidden" name="listName" value="<%= ListTitle %>"> </input>
     </form>
         
     
