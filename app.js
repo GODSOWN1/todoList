@@ -12,7 +12,7 @@ app.set("view engine", "ejs");
 app.use (express.urlencoded({extended: true}));
 app.use (express.static ("public"));
 
-mongoose.connect ("mongodb+srv://admin-Kenneth:ASAken12345@cluster0.vtd9t.mongodb.net/test?retryWrites=true&w=majority/todolistDB",{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+mongoose.connect ("mongodb+srv://admin-Kenneth:<password>@cluster0.vtd9t.mongodb.net/Blessed?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 const itemsSchema = new mongoose.Schema ({
     name: String,
@@ -141,7 +141,6 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
 }
-
 
 app.listen (port, function(){
     console.log ("Server started successfully");
